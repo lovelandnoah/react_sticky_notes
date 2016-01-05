@@ -21,7 +21,7 @@ var Note = React.createClass({
       success: function(data){
         var notes = self.state.notes;
         notes.push({name: data.name, description: data.description});
-        self.setState({notes: notes, showAdd: false, noteName: null, noteDescription: null});
+        self.setState({notes: notes, showNoteDescription: false, showAdd: false, noteName: null, noteDescription: null});
       }
     });
   },
@@ -72,14 +72,27 @@ var Note = React.createClass({
     });
   },
 
+  showNoteDescription: function() {
+    this.setState({showNoteDescription: !this.state.showNoteDescription})
+  },
+
+  displayDescription: function(i){
+    if (this.state.showNoteDescription){
+      return(<div>
+        {this.state.notes[i].description}
+        </div>)
+    }
+  },
+
+
   displayNotes: function() {
     var notes =[];
     for(var i = 0; i < this.state.notes.length; i++){
       notes.push(
-        <div className='card yellow accent-1 col s3'>
+        <div className='card yellow accent-1 col s3' onMouseOver={this.showNoteDescription}>
           <div className='card-content'>
             <span className='card-title'>{this.state.notes[i].name}</span>
-            <p>{this.state.notes[i].description}</p>
+            {this.displayDescription(i)}
             <a className='btn waves-effect' onClick={this.deleteNote.bind(this, this.state.notes[i].id)}>Delete</a>
           </div>
         </div>);
